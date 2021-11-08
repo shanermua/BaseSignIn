@@ -1,11 +1,13 @@
 package com.shaner.base.data
 
 import com.shaner.base.data.model.LoggedInUser
+import com.shaner.base.data.model.SignInResult
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
 import java.io.IOException
+import java.util.*
 
 
 /**
@@ -17,7 +19,7 @@ class LoginDataSource {
     private val json: MediaType = "application/json".toMediaType()
 
 //    val repository = LoginRepository{};
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(username: String, password: String): Result<SignInResult> {
         try {
             // TODO: handle loggedInUser authentication
             val baseUrl = "http://10.2.2.144:8088"
@@ -41,7 +43,7 @@ class LoginDataSource {
                     responseBody = response.body!!.string()
                 }
             })
-            val result = LoggedInUser(java.util.UUID.randomUUID().toString(), responseBody)
+            val result = SignInResult(responseBody,"")
             return Result.Success(result)
         }catch (e: Throwable) {
             return Result.Error(IOException("Error logging in", e))

@@ -27,12 +27,11 @@ class LoginDataSource {
             val requestBodyJson = JSONObject()
             requestBodyJson.put("username", username)
             requestBodyJson.put("password", password)
+            requestBodyJson.put("Version","@string/app_version")
             val requestBody: RequestBody = requestBodyJson.toString().toRequestBody(this.json)
             val builder = Request.Builder()
             builder.url(url)
-            builder.addHeader("Content-Type","application/json")
-                .addHeader("Version","@string/app_version")
-                .post(requestBody)
+            builder.addHeader("Content-Type","application/json").post(requestBody)
             client.newCall(builder.build()).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     throw e

@@ -1,6 +1,7 @@
 package com.shaner.base.data
 
 import android.provider.Settings
+import android.util.Log
 import com.shaner.base.data.model.LoginResult
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -36,7 +37,9 @@ class LoginDataSource {
             builder.url(url)
             builder.addHeader("Content-Type","application/json").post(requestBody)
 
-            client.newCall(builder.build()).enqueue(object : Callback {
+//            fun enqueue
+
+            result = client.newCall(builder.build()).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     throw e
                 }
@@ -46,13 +49,14 @@ class LoginDataSource {
                     if (responseJSON.get("status").toString() == "200")
                     {
                         result = LoginResult("200", responseJSON.get("result").toString())
+                        return result as Unit
 
                     } else {
                         throw error(responseJSON.get("error").toString())
                     }
                 }
-            })
-            Thread.sleep(100)
+            }) as LoginResult
+//            Thread.sleep(100)
 
             println(result)
             return Result.Success(result)

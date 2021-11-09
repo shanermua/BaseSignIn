@@ -39,7 +39,7 @@ class LoginDataSource {
 
 //            fun enqueue
 
-            result = client.newCall(builder.build()).enqueue(object : Callback {
+            client.newCall(builder.build()).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
                     throw e
                 }
@@ -49,14 +49,13 @@ class LoginDataSource {
                     if (responseJSON.get("status").toString() == "200")
                     {
                         result = LoginResult("200", responseJSON.get("result").toString())
-                        return result as Unit
 
                     } else {
                         throw error(responseJSON.get("error").toString())
                     }
                 }
-            }) as LoginResult
-//            Thread.sleep(100)
+            })
+            Thread.sleep(100)
 
             println(result)
             return Result.Success(result)
